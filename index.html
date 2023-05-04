@@ -9,6 +9,29 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <svg id="svg" viewBox="0 0 120 120">
+      <symbol id="circle__path" viewBox="0 0 120 120">
+        <circle cx="60" cy="60" r="50" fill="none" />
+      </symbol>
+      <symbol id="cross__right" viewBox="0 0 120 120">
+        <line x1="110" y1="10" x2="10" y2="110" />
+      </symbol>
+      <symbol id="cross__left" viewBox="0 0 120 120">
+        <line x1="10" y1="10" x2="110" y2="110" />
+      </symbol>
+      <symbol id="diagonal__left" viewBox="0 0 120 120">
+        <line x1="20" y1="10" x2="100" y2="110" />
+      </symbol>
+      <symbol id="diagonal__right" viewBox="0 0 120 120">
+        <line x1="100" y1="10" x2="20" y2="110" />
+      </symbol>
+      <symbol id="vertical__line" viewBox="0 0 40 120">
+        <line x1="20" y1="10" x2="20" y2="110" />
+      </symbol>
+      <symbol id="horizontal__line" viewBox="0 0 120 40">
+        <line x1="10" y1="20" x2="110" y2="20" />
+      </symbol>
+    </svg>
     <main>
       <div class="board">
         <div class="board__cell" data-cell="0"></div>
