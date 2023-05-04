@@ -103,7 +103,7 @@ const Game = (() => {
     if (winner) {
       console.log(`${winner} wins with line ${winningLine}`);
       console.log('Game ended');
-      Board.drawWinningLine(winner, winningLine);
+      setTimeout(() => Board.drawWinningLine(winner, winningLine), 1000);
     }
   }
 
