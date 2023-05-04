@@ -1,6 +1,6 @@
 :root {
-  box-sizing: border-box;
   color-scheme: dark;
+  box-sizing: border-box;
 }
 
 *,
@@ -9,4 +9,99 @@
   box-sizing: inherit;
   margin: 0;
   padding: 0;
+}
+
+main {
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  position: relative;
+  background-color: purple;
+  width: 90svmin;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.board__cell {
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#svg {
+  display: none;
+}
+
+.circleMark {
+  --stroke-color: red;
+  --circumference: 314.159;
+  width: 75%;
+  aspect-ratio: 1/1;
+  transform: rotateY(180deg) rotateZ(-90deg);
+  stroke: var(--stroke-color);
+  stroke-width: 20;
+  stroke-linecap: round;
+  stroke-dasharray: var(--circumference) var(--circumference);
+  animation: drawCircle 1s forwards;
+}
+
+@keyframes drawCircle {
+  0% {
+    stroke-dashoffset: var(--circumference);
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+#cross-svg {
+  display: none;
+}
+
+.crossMark {
+  --stroke-color: green;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-areas: "cross";
+  place-items: center;
+}
+
+.cross__right,
+.cross__left {
+  --distance: 141.421;
+  width: 75%;
+  aspect-ratio: 1/1;
+  grid-area: cross;
+  stroke-width: 20;
+  stroke-linecap: round;
+  stroke-dasharray: var(--distance) var(--distance);
+}
+
+.cross__right {
+  animation: drawLine 1s forwards;
+}
+
+.cross__left {
+  stroke: transparent;
+  animation: drawLine 0.5s 0.5s forwards;
+}
+
+@keyframes drawLine {
+  1% {
+    stroke-dashoffset: var(--distance);
+    stroke: var(--stroke-color);
+  }
+  100% {
+    stroke-dashoffset: 0;
+    stroke: var(--stroke-color);
+  }
 }
