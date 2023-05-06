@@ -14,6 +14,8 @@
 main {
   height: 100svh;
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
 }
@@ -21,7 +23,8 @@ main {
 .board {
   position: relative;
   background-color: purple;
-  width: 90svmin;
+  width: 85svmin;
+  max-width: 500px;
   aspect-ratio: 1/1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -130,4 +133,108 @@ main {
   100% {
     stroke-dashoffset: 0;
   }
+}
+
+.userInfoModal {
+  margin: auto;
+  background-color: transparent;
+  border: none;
+}
+
+.userInfoModal::backdrop {
+  backdrop-filter: blur(5px);
+}
+
+.form__user {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ff9f43;
+  border: #feca57 solid 0.5rem;
+  border-radius: 1rem;
+  padding: 1rem;
+  color: #000;
+  transform: scale(0);
+  animation: bubblingModals 2.5s forwards;
+}
+
+@keyframes bubblingModals {
+  100% {
+    transform: scale(1);
+  }
+}
+
+#name {
+  appearance: none;
+  height: 2rem;
+  width: 15ch;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #54a0ff;
+  caret-color: #5f27cd;
+}
+
+#name:focus-visible {
+  outline: 2px solid #5f27cd;
+}
+
+.markPicker {
+  display: grid;
+  grid-template-columns: repeat(2, min-content);
+  grid-template-rows: 6rem;
+  gap: 1rem;
+  place-content: center;
+  place-items: center;
+}
+
+.pick {
+  width: 2.5rem;
+  aspect-ratio: 1/1;
+  stroke-width: 15;
+  stroke-linecap: round;
+  stroke: hsla(0, 0%, 50%);
+  transition: all 1s;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + .pick {
+  width: 4rem;
+  stroke-width: 20;
+}
+
+input[type="radio"]:checked + .pick__X {
+  stroke: hsla(120, 100%, 25%);
+}
+
+input[type="radio"]:checked + .pick__O {
+  stroke: hsla(0, 100%, 50%);
+}
+
+.startGameBtn,
+.playAgainBtn {
+  display: block;
+  margin: auto;
+  appearance: none;
+  background-color: #341f97;
+  color: #01a3a4;
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.5s;
+}
+
+.startGameBtn:hover,
+.playAgainBtn:hover {
+  background-color: #5f27cd;
+  color: #00d2d3;
+  scale: 1.1;
 }
