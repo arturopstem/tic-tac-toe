@@ -32,6 +32,40 @@
         <line x1="0" y1="10" x2="120" y2="30" />
       </symbol>
     </svg>
+    <dialog class="userInfoModal">
+      <form class="form__user">
+        <div>
+          <label for="name">Your name: </label>
+          <input type="text" id="name" name="username" maxlength="12" />
+        </div>
+        <div class="markPicker">
+          <label for="X" class="">
+            <input type="radio" name="symbol" id="X" value="cross" checked />
+            <svg class="pick__X pick">
+              <use href="#cross__left"></use>
+              <use href="#cross__right"></use>
+            </svg>
+          </label>
+          <label for="O" class="">
+            <input type="radio" name="symbol" id="O" value="circle" />
+            <svg class="pick__O pick">
+              <use href="#circle__path"></use>
+            </svg>
+          </label>
+        </div>
+        <div>
+          <button id="startGameBtn" class="startGameBtn" type="button">
+            Start Game
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog class="resultModal">
+      <div>Result Message</div>
+      <div>
+        <button class="playAgainBtn">Play Again</button>
+      </div>
+    </dialog>
     <main>
       <div class="board">
         <div class="board__cell" data-cell="0"></div>
@@ -44,6 +78,9 @@
         <div class="board__cell" data-cell="7"></div>
         <div class="board__cell" data-cell="8"></div>
         <div class="winningLineBox"></div>
+      </div>
+      <div>
+        <button class="playAgainBtn">Play Again</button>
       </div>
     </main>
   </body>
