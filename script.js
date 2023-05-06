@@ -53,10 +53,10 @@ const Board = (() => {
     return svg.outerHTML;
   }
 
-  function drawWinningLine(winner, winningLine) {
+  function drawWinningLine(winnerMark, winningLine) {
     const smallLine = 121.6552506059644;
     const longLine = 136.01470508735443;
-    const color = winner === 'cross' ? 'green' : 'red';
+    const color = winnerMark === 'cross' ? 'green' : 'red';
     let svgLine;
     switch (winningLine) {
       case '012':
@@ -94,16 +94,22 @@ const Board = (() => {
 
 const Game = (() => {
   const state = [];
-  const userMark = 'cross';
-  const machineMark = 'circle';
-  let winner;
+  const user = {};
+  const machine = { name: 'Machine' };
+  let winnerMark;
   let winningLine;
 
+  function showResultModal() {
+    const resultModal = document.querySelector('.resultModal');
+    resultModal.show();
+  }
+
   function declareWinner() {
-    if (winner) {
+    if (winnerMark) {
+      const winner = user.mark === winnerMark ? user.name : machine.name;
       console.log(`${winner} wins with line ${winningLine}`);
       console.log('Game ended');
-      setTimeout(() => Board.drawWinningLine(winner, winningLine), 1000);
+      setTimeout(() => Board.drawWinningLine(winnerMark, winningLine), 1000);
     }
   }
 
@@ -127,11 +133,11 @@ const Game = (() => {
       });
       const lineString = lineArray.join('');
       if (lineString === 'XXX' || lineString === 'OOO') {
-        winner = lineString === 'XXX' ? 'cross' : 'circle';
+        winnerMark = lineString === 'XXX' ? 'cross' : 'circle';
         winningLine = line;
       }
     });
-    return !!winner;
+    return !!winnerMark;
   }
 
   function fillState(mark, cell) {
@@ -142,8 +148,8 @@ const Game = (() => {
   function cellClicked(e) {
     const cellSelected = e.target;
     if (cellSelected.classList.contains('empty')) {
-      Board.drawMark(userMark, cellSelected);
-      fillState(userMark, cellSelected);
+      Board.drawMark(user.mark, cellSelected);
+      fillState(user.mark, cellSelected);
       deactivateEmptyCells();
       if (hasWinner() || !Board.hasEmptyCells()) {
         declareWinner();
@@ -155,8 +161,8 @@ const Game = (() => {
 
   function machineTurn() {
     const cellChoice = Board.getRandomEmptyCell();
-    Board.drawMark(machineMark, cellChoice);
-    fillState(machineMark, cellChoice);
+    Board.drawMark(machine.mark, cellChoice);
+    fillState(machine.mark, cellChoice);
     if (hasWinner()) {
       declareWinner();
       return;
@@ -178,14 +184,72 @@ const Game = (() => {
     });
   }
 
-  function init() {
-    winner = undefined;
+  function setUserMachine(info) {
+    user.name = info.name;
+    user.mark = info.symbol;
+    machine.mark = user.mark === 'cross' ? 'circle' : 'cross';
+  }
+
+  function removeCellsEventListeners() {
+    const cells = document.querySelectorAll('.board__cell');
+    cells.forEach((cell) => cell.removeEventListener('click', cellClicked));
+  }
+
+  function clearInfo() {
+    delete user.name;
+    delete user.mark;
+    delete machine.mark;
+    winnerMark = undefined;
     winningLine = undefined;
     state.splice(0);
+  }
+  function init() {
+    removeCellsEventListeners();
     Board.init();
     activateEmptyCells();
   }
-  return { init };
+  return { init, setUserMachine, clearInfo, showResultModal };
 })();
 
-Game.init();
+const modal = (() => {
+  const userInfoModal = document.querySelector('.userInfoModal');
+
+  function actionPlayAgain() {
+    const modals = document.querySelectorAll('dialog');
+    modals.forEach((dialog) => dialog.close());
+    getUserInfo();
+  }
+
+  function activatePlayAgainBtns() {
+    const playAgainBtns = document.querySelectorAll('.playAgainBtn');
+    playAgainBtns.forEach((btn) => {
+      btn.addEventListener('click', actionPlayAgain);
+    });
+  }
+  function readUserInfo() {
+    const formElements = document.querySelector('.form__user').elements;
+    const name = formElements.name.value;
+    const symbol = formElements.symbol.value;
+    return { name, symbol };
+  }
+
+  function proceedToStart() {
+    Game.clearInfo();
+    const info = readUserInfo();
+    Game.setUserMachine(info);
+    Game.init();
+    userInfoModal.close();
+  }
+
+  function getUserInfo() {
+    userInfoModal.showModal();
+    const startGameBtn = document.querySelector('#startGameBtn');
+    startGameBtn.addEventListener('click', proceedToStart);
+  }
+  return { getUserInfo, activatePlayAgainBtns };
+})();
+
+(() => {
+  modal.getUserInfo();
+  modal.activatePlayAgainBtns();
+})();
