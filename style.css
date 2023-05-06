@@ -135,7 +135,8 @@ main {
   }
 }
 
-.userInfoModal {
+.userInfoModal,
+.resultModal {
   margin: auto;
   background-color: transparent;
   border: none;
@@ -145,7 +146,8 @@ main {
   backdrop-filter: blur(5px);
 }
 
-.form__user {
+.form__user,
+.result {
   font-family: Arial, Helvetica, sans-serif;
   background-color: #ff9f43;
   border: #feca57 solid 0.5rem;
@@ -237,4 +239,12 @@ input[type="radio"]:checked + .pick__O {
   background-color: #5f27cd;
   color: #00d2d3;
   scale: 1.1;
+}
+
+.result__message {
+  color: var(--color);
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
 }

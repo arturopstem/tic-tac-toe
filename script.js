@@ -101,16 +101,22 @@ const Game = (() => {
 
   function showResultModal() {
     const resultModal = document.querySelector('.resultModal');
-    resultModal.show();
+    resultModal.showModal();
   }
 
   function declareWinner() {
+    const resultMessage = document.querySelector('.result__message');
     if (winnerMark) {
-      const winner = user.mark === winnerMark ? user.name : machine.name;
-      console.log(`${winner} wins with line ${winningLine}`);
-      console.log('Game ended');
+      const winnerName = user.mark === winnerMark ? user.name : machine.name;
+      resultMessage.textContent = `${winnerName} wins the game!`;
+      const color = winnerMark === 'cross' ? 'green' : 'red';
+      resultMessage.style.setProperty('--color', color);
       setTimeout(() => Board.drawWinningLine(winnerMark, winningLine), 1000);
+    } else {
+      resultMessage.textContent = 'It is a tie!';
+      resultMessage.style.setProperty('--color', 'black');
     }
+    setTimeout(() => showResultModal(), winnerMark ? 2000 : 1000);
   }
 
   function hasWinner() {
@@ -185,7 +191,7 @@ const Game = (() => {
   }
 
   function setUserMachine(info) {
-    user.name = info.name;
+    user.name = info.name ? info.name : 'Human';
     user.mark = info.symbol;
     machine.mark = user.mark === 'cross' ? 'circle' : 'cross';
   }
@@ -208,7 +214,7 @@ const Game = (() => {
     Board.init();
     activateEmptyCells();
   }
-  return { init, setUserMachine, clearInfo, showResultModal };
+  return { init, setUserMachine, clearInfo };
 })();
 
 const modal = (() => {
