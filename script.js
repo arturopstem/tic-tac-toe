@@ -8,7 +8,7 @@ const Board = (() => {
       cell.replaceChildren();
     });
     const winningLineBox = document.querySelector('.winningLineBox');
-    winningLineBox.innerHTML = '';
+    winningLineBox.replaceChildren();
   }
 
   function getRandomEmptyCell() {
@@ -24,14 +24,45 @@ const Board = (() => {
 
   function drawCircle(cell) {
     const cellElement = cell;
-    cellElement.innerHTML =
-      '<svg class="circleMark"><use href="#circle__path"></use></svg>';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('circleMark');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#circle__path');
+    svg.appendChild(use);
+    cellElement.appendChild(svg);
   }
 
   function drawCross(cell) {
     const cellElement = cell;
-    cellElement.innerHTML =
-      '<div class="crossMark"><svg class="cross__left"><use href="#cross__left"></use></svg><svg class="cross__right"><use href="#cross__right"></use></svg></div>';
+    const div = document.createElement('div');
+    div.classList.add('crossMark');
+    const svgLeft = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'svg'
+    );
+    svgLeft.classList.add('cross__left');
+    const useLeft = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'use'
+    );
+    useLeft.setAttribute('href', '#cross__left');
+    svgLeft.appendChild(useLeft);
+    const svgRight = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'svg'
+    );
+    svgRight.classList.add('cross__right');
+    const useRight = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'use'
+    );
+    useRight.setAttribute('href', '#cross__right');
+    svgRight.appendChild(useRight);
+
+    div.appendChild(svgLeft);
+    div.appendChild(svgRight);
+
+    cellElement.appendChild(div);
   }
 
   function drawMark(mark, cell) {
@@ -42,15 +73,15 @@ const Board = (() => {
   }
 
   function formatSVG(direction, color, distance, gridArea) {
-    const svg = document.createElement('svg');
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.classList.add('winningMark');
     svg.style.setProperty('--distance', distance);
     svg.style.setProperty('--stroke', color);
     svg.style.setProperty('grid-area', gridArea);
-    const use = document.createElement('use');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
     use.setAttribute('href', `#${direction}`);
     svg.appendChild(use);
-    return svg.outerHTML;
+    return svg;
   }
 
   function drawWinningLine(winnerMark, winningLine) {
@@ -86,7 +117,7 @@ const Board = (() => {
       default:
     }
     const winningLineBox = document.querySelector('.winningLineBox');
-    winningLineBox.innerHTML = svgLine;
+    winningLineBox.appendChild(svgLine);
   }
 
   return { init, drawMark, getRandomEmptyCell, hasEmptyCells, drawWinningLine };
